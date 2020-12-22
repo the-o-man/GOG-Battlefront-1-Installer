@@ -1,43 +1,31 @@
-# hello_psg.py
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from subprocess import call
 
-import PySimpleGUI as sg
 
-layout = [[sg.Text("Welcome to the unofficial BattleFront I installer for PopOS")], [sg.Button("Continue")]]
 
-# Create the window
-window = sg.Window("Installer", layout)
+class ourwindow(Gtk.Window):
 
-# Create an event loop
-continue_flag = False
-while True:
-    event, values = window.read()
-    # End program if user closes window or
-    # presses the OK button
-    if event == "Continue":
-        continue_flag = True
-        break
-    elif event == sg.WIN_CLOSED:
-        break
+    def __init__(self):
+        Gtk.Window.__init__(self, title="BattleFront I Installer")
+        Gtk.Window.set_default_size(self, 200, 200)
+        Gtk.Window.set_position(self, Gtk.WindowPosition.CENTER)
 
-window.close()
+        button1 = Gtk.Button("Continue")
+        button1.connect("clicked", self.whenbutton1_clicked)
+        self.add(button1)
 
-if continue_flag:
+    def whenbutton1_clicked(self, button):
+        call("./gog_bf1_installer.sh")
+        Gtk.main_quit()
 
-    # Move to next window
-    layout1 = [[sg.Text("Test 1 window")], [sg.Button("Continue")]]
 
-    # Create the window
-    window1 = sg.Window("Step 1", layout)
+window = ourwindow()
+window.connect("delete-event", Gtk.main_quit)
+window.show_all()
+Gtk.main()
 
-    # Create an event loop
-    while True:
-        event, values = window.read()
-        # End program if user closes window or
-        # presses the OK button
-        if event == "Continue" or event == sg.WIN_CLOSED:
-            continue_flag = True
-            break
 
-    window1.close()
-else:
-    exit(0)
