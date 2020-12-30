@@ -1,31 +1,80 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# import gi
+# gi.require_version('Gtk', '3.0')
+# from gi.repository import Gtk
+# from subprocess import call
+#
+#
+#
+# class ourwindow(Gtk.Window):
+#
+#     def __init__(self):
+#         Gtk.Window.__init__(self, title="BattleFront I Installer")
+#         Gtk.Window.set_default_size(self, 600, 300)
+#         Gtk.Window.set_position(self, Gtk.WindowPosition.CENTER)
+#
+#         button1 = Gtk.Button("Continue")
+#         button1.connect("clicked", self.whenbutton1_clicked)
+#         self.add(button1)
+#
+#     def whenbutton1_clicked(self, button):
+#         call("./gog_bf1_installer.sh")
+#         Gtk.main_quit()
+#
+#
+# window = ourwindow()
+# window.connect("delete-event", Gtk.main_quit)
+# window.show_all()
+# Gtk.main()
+
 import gi
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
 from subprocess import call
 
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
 
 
-class ourwindow(Gtk.Window):
-
+class ButtonWindow(Gtk.Window):
     def __init__(self):
-        Gtk.Window.__init__(self, title="BattleFront I Installer")
-        Gtk.Window.set_default_size(self, 200, 200)
+        Gtk.Window.__init__(self, title="Dendron PopOS Game Installer")
+        Gtk.Window.set_default_size(self, 400, 200)
         Gtk.Window.set_position(self, Gtk.WindowPosition.CENTER)
 
-        button1 = Gtk.Button("Continue")
-        button1.connect("clicked", self.whenbutton1_clicked)
-        self.add(button1)
+        main_box = Gtk.VBox()
+        box1 = Gtk.VBox()
+        text1 = Gtk.Label("Welcome to the Dendron Systems game installer for BattleFront I.")
+        text2 = Gtk.Label("This installer requires that a valid copy of the GOG")
+        text3 = Gtk.Label("version of BattleFront I is in your Downloads folder.")
+        text4 = Gtk.Label("If a .exe is not found, the installer will fail.")
 
-    def whenbutton1_clicked(self, button):
+        box1.pack_start(text1, expand = True, fill = True, padding = 10)
+        box1.pack_start(text2, expand = True, fill = True, padding = 10)
+        box1.pack_start(text3, expand = True, fill = True, padding = 10)
+        box1.pack_start(text4, expand = True, fill = True, padding = 10)
+
+        button1 = Gtk.Button(stock = Gtk.STOCK_OK)
+        button1.connect("clicked", self.on_open_clicked)
+
+        button2 = Gtk.Button(stock = Gtk.STOCK_CANCEL)
+        button2.connect("clicked", self.on_close_clicked)
+
+        box1.pack_start(button1, expand = True, fill = True, padding = 10)
+        box1.pack_start(button2, expand = True, fill = True, padding = 10)
+        box1.set_border_width(30)
+
+        main_box.add(box1)
+        self.add(main_box)
+
+    def on_open_clicked(self, button1):
         call("./gog_bf1_installer.sh")
         Gtk.main_quit()
 
+    def on_close_clicked(self, button2):
+        Gtk.main_quit()
 
-window = ourwindow()
-window.connect("delete-event", Gtk.main_quit)
-window.show_all()
+
+win = ButtonWindow()
+win.connect("destroy", Gtk.main_quit)
+win.show_all()
 Gtk.main()
-
-
