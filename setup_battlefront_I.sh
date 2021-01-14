@@ -95,8 +95,8 @@ class ButtonWindow(Gtk.Window):
         self.add(main_box)
 
     def on_open_clicked(self, button1):
-        call(".prerecs.sh")
-        call(".gog_bf1_installer.sh")
+        call("./.prerecs.sh")
+        call("./.gog_bf1_installer.sh")
         Gtk.main_quit()
 
     def on_close_clicked(self, button2):
@@ -112,12 +112,14 @@ EOF
 
 cat > .prerecs.sh << EOF
 #!/bin/bash
-python3 apt_status.py &
+python3 .apt_status.py &
 process=\$!
 echo \$process
 pkexec apt install python3 python3-pip wine winetricks -y && kill -9 \$process
 
 EOF
+
+chmod u+x .prerecs.sh
 
 cat > .wine_status.py << EOF
 import gi
@@ -292,6 +294,8 @@ WINEARCH=win64 WINEPREFIX=\$wine_prefix_folder wine \$installer
 rm ~/.local/share/applications/wine/Programs/GOG.com/STAR\ WARS\ Battlefront/Uninstall\ STAR\ WARS\ Battlefront.desktop
 
 EOF
+
+chmod u+x .gog_bf1_installer.sh
 
 python3 .install_gui.py
 
